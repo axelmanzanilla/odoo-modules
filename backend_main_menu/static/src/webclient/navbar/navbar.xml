@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-inherit="web.NavBar.AppsMenu" t-inherit-mode="extension" owl="1">
+        <Dropdown position="replace">
+            <div class="d-flex justify-content-center align-items-center cursor-pointer" t-on-click="onClickMenu">
+                <i class="oi oi-apps text-white mx-3 fs-2"/>
+            </div>
+        </Dropdown>
+    </t>
+</templates>

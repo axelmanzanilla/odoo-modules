@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="backend_main_menu.MainMenu" owl="1">
+        <div class="main-menu">
+            <div class="apps-container">
+                <t t-foreach="apps" t-as="app" t-key="app.id">
+                    <a t-on-click="() => this.onClickModule(app)">
+                        <img t-if="app.webIcon &amp;&amp; app.webIcon.includes('.png')" class="module-icon" t-attf-src="data:image/png;base64,{{app.webIconData}}" />
+                        <img t-if="app.webIcon &amp;&amp; app.webIcon.includes('.svg')" class="module-icon" t-attf-src="data:image/svg+xml;base64,{{app.webIconData}}" />
+                        <img t-if="!app.webIcon" class="module-icon" src="/backend_main_menu/static/src/img/default_icon.png" />
+                        <p t-esc="app.name" class="text-white fs-4 text-truncate" />
+                     </a>
+                </t>
+             </div>
+        </div>
+    </t>
+</templates>
