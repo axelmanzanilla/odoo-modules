@@ -5,9 +5,9 @@
         Install a main menu where you can access all installed modules in a more visual way.
     """,
     'category': 'Extra Tools',
-    'version': '16.0.0.2',
+    'version': '16.0.1.0',
     'author': 'Softparadox',
-    'website': 'https://www.softparadox.com',
+    'website': 'https://softparadox.com',
     'license': 'LGPL-3',
     'depends': ['web'],
     'data': [
