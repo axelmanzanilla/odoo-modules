@@ -1,0 +1,53 @@
+.main-menu {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    width: 100%;
+    height: 100vh;
+    top: 38px;
+    background: #71639e;
+    background: linear-gradient(0deg, #bad 0%, #71639e 100%);
+}
+
+.apps-container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 768px;
+    width: 90%;
+    margin-top: 60px;
+
+    @media (max-width: 576px) {
+        width: 100%;
+    }
+
+    a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-bottom: 12px;
+        cursor: pointer;
+        width: 16.66%;
+
+        @media (max-width: 768px) {
+            width: 25%;
+        }
+
+        @media (max-width: 576px) {
+            width: 33.33%;
+        }
+    }
+}
+
+.module-icon {
+    width: 70px;
+    height: 70px;
+    margin: 4px 0;
+    transition: all 250ms;
+
+    &:hover {
+        margin: 2px 0 6px 0;
+        box-shadow: 2px 2px 12px 1px rgba(0, 0, 0, 0.2);
+    }
+}
