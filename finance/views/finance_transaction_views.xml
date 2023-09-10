@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="finance_transaction_view_tree" model="ir.ui.view">
+        <field name="name">finance.transaction.view.tree</field>
+        <field name="model">finance.transaction</field>
+        <field name="arch" type="xml">
+            <tree string="Transactions" editable="top" default_order="date desc, id desc">
+                <field name="date" />
+                <field name="name" />
+                <field name="description" />
+                <field name="account_id" options="{'no_open': True, 'no_create': True}" />
+                <field name="budget_id" options="{'no_open': True, 'no_create': True}" />
+                <field name="has_children" invisible="1" />
+                <field name="category_ids" options="{'no_open': True}" widget="many2many_tags" />
+                <field name="currency_id" invisible="1" />
+                <field name="amount" attrs="{'readonly': [('has_children', '=', True)]}" />
+                <button name="action_open_transaction" string="Details" type="object" class="oe_highlight" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="finance_transaction_view_form" model="ir.ui.view">
+        <field name="name">finance.transaction.view.form</field>
+        <field name="model">finance.transaction</field>
+        <field name="arch" type="xml">
+            <form string="Accounts">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" required="1" />
+                            <field name="description" />
+                            <field name="category_ids" widget="many2many_tags" />
+                        </group>
+                        <group>
+                            <field name="date" />
+                            <field name="is_recurrent" invisible="1" />
+                            <field name="recurrence" attrs="{'invisible': [('is_recurrent', '=', False)], 'required': [('is_recurrent', '=', True)]}" />
+                            <field name="next_recurrence" attrs="{'invisible': [('is_recurrent', '=', False)]}" />
+                            <field name="currency_id" invisible="1" />
+                            <field name="has_children" invisible="1" />
+                            <field name="account_id" options="{'no_open': True, 'no_create': True}" />
+                            <field name="amount" attrs="{'readonly': [('has_children', '=', True)]}" />
+                        </group>
+                    </group>
+                    <label for="child_ids" />
+                    <div>
+                        <field name="child_ids">
+                            <tree edit="True" editable="bottom">
+                                <field name="date" />
+                                <field name="name" />
+                                <field name="account_id" options="{'no_open': True, 'no_create': True}" />
+                                <field name="budget_id" options="{'no_open': True, 'no_create': True}" />
+                                <field name="currency_id" invisible="1" />
+                                <field name="amount" />
+                            </tree>
+                        </field>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="finance_recurrent_transaction_view_tree" model="ir.ui.view">
+        <field name="name">finance.recurrent.transaction.view.tree</field>
+        <field name="model">finance.transaction</field>
+        <field name="arch" type="xml">
+            <tree string="Transactions" default_order="name desc, id desc">
+                <field name="date" />
+                <field name="name" />
+                <field name="description" />
+                <field name="account_id" options="{'no_open': True, 'no_create': True}" />
+                <field name="budget_id" options="{'no_open': True, 'no_create': True}" />
+                <field name="category_ids" options="{'no_open': True}" widget="many2many_tags" />
+                <field name="currency_id" invisible="1" />
+                <field name="amount" />
+            </tree>
+        </field>
+    </record>
+</odoo>
