@@ -6,6 +6,7 @@ from odoo import api, fields, models
 
 class FinanceTransaction(models.Model):
     _name = 'finance.transaction'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'The transactions'
 
     name = fields.Char(string='Name')
@@ -52,6 +53,13 @@ class FinanceTransaction(models.Model):
     next_recurrence = fields.Date(string='Next Recurrence',
                                   compute='_compute_next_recurrence',
                                   store=True)
+    recurrence_email = fields.Boolean(string='Email Notification')
+    tracking_period = fields.Selection(string='Tracking Period',
+                                       selection=[('no', 'No track'),
+                                                  ('weeks', 'After 1 Week'),
+                                                  ('months', 'After 1 month'),
+                                                  ('years', 'After 1 year')])
+    # TODO: Add an field to add the calification
 
     @api.depends('child_ids')
     def _compute_amount(self):
@@ -98,12 +106,14 @@ class FinanceTransaction(models.Model):
             'type': 'ir.actions.act_window',
             'res_model': 'finance.transaction',
             'view_mode': 'form',
-            'target': 'new',
+            'target': 'current',
             'res_id': self.id
         }
 
     def _cron_create_transaction(self):
+        print("\n\nCron")
         transactions = self.search([('is_recurrent', '=', True), ('parent_id', '=', False), ('next_recurrence', '<', date.today())])
+        print(transactions)
         for transaction in transactions:
             new_transaction = self._new_transaction_from_transaction(transaction, transaction.next_recurrence)
             for child in transaction.child_ids:
@@ -112,7 +122,7 @@ class FinanceTransaction(models.Model):
                 new_child = self.create(self._new_transaction_from_transaction(child, transaction.next_recurrence))
                 new_transaction['child_ids'].append(new_child.id)
             self.create(new_transaction)
-            transaction.next_recurrence = transactions.next_recurrence + relativedelta(**{transaction.recurrence: 1})
+            transaction.next_recurrence = transaction.next_recurrence + relativedelta(**{transaction.recurrence: 1})
             self.write(transaction)
 
     @api.model

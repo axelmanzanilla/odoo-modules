@@ -19,12 +19,28 @@
             <form string="Accounts">
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="description"/>
-                        <field name="currency_id" invisible="1" />
-                        <field name="amount" />
+                        <group>
+                            <field name="name" />
+                            <field name="description" />
+                            <field name="currency_id" invisible="1" />
+                            <field name="amount" />
+                        </group>
+                        <group>
+                            <field name="type" invisible="1" />
+                            <field name="goal" attrs="{ 'invisible': [('type', '=', 'account')] }" />
+                            <field name="goal_amount" attrs="{ 'invisible': [('goal', '=', False)] }" />
+                            <field name="goal_percentage" attrs="{ 'invisible': [('goal', '=', False)] }" widget="progressbar" />
+                            <field name="budget_end_date" />
+                            <field name="budget_review" />
+                            <field name="send_email_review" />
+                        </group>
                     </group>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>
@@ -39,12 +55,14 @@
                         <div class="oe_kanban_global_click oe_kanban_details">
                             <div>
                                 <strong>
-                                    <field name="name"/>
+                                    <field name="name" />
                                 </strong>
                             </div>
                             <div>
+                                <field name="goal" invisible="1" />
+                                <field name="goal_percentage" attrs="{ 'invisible': [('goal', '=', False)] }" widget="progressbar" />
                                 <field name="currency_id" invisible="1" />
-                                <field name="amount"/>
+                                <field name="amount" />
                             </div>
                         </div>
                     </t>

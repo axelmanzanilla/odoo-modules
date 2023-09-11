@@ -75,7 +75,21 @@
         </field>
     </record>
 
-    <menuitem id="finance_menu_root" name="Finance">
+    <record id="action_finance_asset" model="ir.actions.act_window">
+        <field name="name">Assets</field>
+        <field name="res_model">finance.asset</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create the first asset
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="finance_menu_root"
+        name="Finance"
+        web_icon="finance,static/description/icon.png">
         <menuitem id="transactions_menu" name="Transactions">
             <menuitem id="finance_manual_menu" name="Manual">
                 <menuitem id="menu_finance_transaction" name="Transactions" action="action_finance_transaction" />
@@ -90,5 +104,6 @@
             <menuitem id="menu_finance_budget" name="Budgets" action="action_finance_budget" />
             <menuitem id="menu_finance_category" name="Categories" action="action_finance_category" />
         </menuitem>
+        <menuitem id="menu_finance_asset" name="Assets" action="action_finance_asset" />
     </menuitem>
 </odoo>

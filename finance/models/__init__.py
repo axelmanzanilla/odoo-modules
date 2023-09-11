@@ -1,2 +1,1 @@
-from . import finance_account, finance_transaction, finance_transference, finance_category
-
+from . import finance_account, finance_transaction, finance_transference, finance_category, finance_asset

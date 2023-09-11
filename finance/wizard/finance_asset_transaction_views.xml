@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="finance_asset_transaction_view_form" model="ir.ui.view">
+        <field name="name">finance.asset.transaction.view.form</field>
+        <field name="model">finance.asset.transaction</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                        </group>
+                        <group>
+                            <field name="asset_id" />
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_confirm_sell" type="object" class="btn-primary" string="Confirm" />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

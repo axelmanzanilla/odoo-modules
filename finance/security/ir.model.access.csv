@@ -3,7 +3,11 @@ access_finance_transaction_user,finance.transaction.user,model_finance_transacti
 access_finance_account_user,finance.account.user,model_finance_account,base.group_user,1,0,0,0
 access_finance_transference_user,finance.transference.user,model_finance_transference,base.group_user,1,0,0,0
 access_finance_category_user,finance.category.user,model_finance_category,base.group_user,1,0,0,0
+access_finance_asset_user,finance.asset.user,model_finance_asset,base.group_user,1,0,0,0
+access_finance_asset_transaction_user,finance.asset.transaction.user,model_finance_asset_transaction,base.group_user,1,0,0,0
 access_finance_transaction_manager,finance.transaction.manager,model_finance_transaction,base.group_system,1,1,1,1
 access_finance_account_manager,finance.account.manager,model_finance_account,base.group_system,1,1,1,1
 access_finance_transference_manager,finance.transference.manager,model_finance_transference,base.group_system,1,1,1,1
 access_finance_category_manager,finance.category.manager,model_finance_category,base.group_system,1,1,1,1
+access_finance_asset_manager,finance.asset.manager,model_finance_asset,base.group_system,1,1,1,1
+access_finance_asset_transaction_manager,finance.asset.transaction.manager,model_finance_asset_transaction,base.group_system,1,1,1,1

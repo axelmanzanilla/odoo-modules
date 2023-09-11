@@ -3,7 +3,8 @@ from odoo import api, fields, models
 
 class FinanceTransference(models.Model):
     _name = 'finance.transference'
-    _description = 'The transferencs'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _description = 'Finance Transference'
 
     name = fields.Char(string='Name', readonly=True)
     description = fields.Text(string='Description')
