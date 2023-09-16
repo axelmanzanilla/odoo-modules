@@ -3,8 +3,9 @@
     <record id="action_finance_transaction" model="ir.actions.act_window">
         <field name="name">Transactions</field>
         <field name="res_model">finance.transaction</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,calendar,graph,form,pivot</field>
         <field name="view_id" ref="finance_transaction_view_tree" />
+        <field name="search_view_id" ref="finance.finance_transaction_view_search"/>
         <field name="domain">[('parent_id', '=', False), ('is_recurrent', '=', False)]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -24,11 +25,11 @@
         </field>
     </record>
 
-    <record id="action_finance_income_expenses" model="ir.actions.act_window">
-        <field name="name">Income &amp; Expenses</field>
+    <record id="action_finance_scheduled" model="ir.actions.act_window">
+        <field name="name">Scheduled Transactions</field>
         <field name="res_model">finance.transaction</field>
         <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="finance_recurrent_transaction_view_tree" />
+        <field name="view_id" ref="finance_scheduled_transaction_view_tree" />
         <field name="domain">[('parent_id', '=', False), ('is_recurrent', '=', True)]</field>
         <field name="context">{'default_is_recurrent': True}</field>
         <field name="help" type="html">
@@ -42,8 +43,7 @@
         <field name="name">Accounts</field>
         <field name="res_model">finance.account</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="domain">[('type', '=', 'account')]</field>
-        <field name="context">{'default_type': 'account'}</field>
+        <field name="search_view_id" ref="finance.finance_account_view_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create the first account
@@ -53,10 +53,9 @@
 
     <record id="action_finance_budget" model="ir.actions.act_window">
         <field name="name">Budgets</field>
-        <field name="res_model">finance.account</field>
+        <field name="res_model">finance.budget</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="domain">[('type', '=', 'budget')]</field>
-        <field name="context">{'default_type': 'budget'}</field>
+        <field name="search_view_id" ref="finance.finance_budget_view_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create the first budget
@@ -92,18 +91,18 @@
         web_icon="finance,static/description/icon.png">
         <menuitem id="transactions_menu" name="Transactions">
             <menuitem id="finance_manual_menu" name="Manual">
-                <menuitem id="menu_finance_transaction" name="Transactions" action="action_finance_transaction" />
-                <menuitem id="menu_finance_transference" name="Transferences" action="action_finance_transference" />
+                <menuitem id="menu_finance_transaction" name="Transactions" action="action_finance_transaction"/>
+                <menuitem id="menu_finance_transference" name="Transferences" action="action_finance_transference"/>
             </menuitem>
             <menuitem id="automatic_manual_menu" name="Automatic">
-                <menuitem id="menu_finance_income" name="Income &amp; Expenses" action="action_finance_income_expenses" />
+                <menuitem id="menu_finance_scheduled" name="Scheduled Transactions" action="action_finance_scheduled"/>
             </menuitem>
         </menuitem>
         <menuitem id="accounts_menu" name="Accounts">
-            <menuitem id="menu_finance_account" name="Accounts" action="action_finance_account" />
-            <menuitem id="menu_finance_budget" name="Budgets" action="action_finance_budget" />
-            <menuitem id="menu_finance_category" name="Categories" action="action_finance_category" />
+            <menuitem id="menu_finance_account" name="Accounts" action="action_finance_account"/>
+            <menuitem id="menu_finance_budget" name="Budgets" action="action_finance_budget"/>
+            <menuitem id="menu_finance_category" name="Categories" action="action_finance_category"/>
         </menuitem>
-        <menuitem id="menu_finance_asset" name="Assets" action="action_finance_asset" />
+        <!-- <menuitem id="menu_finance_asset" name="Assets" action="action_finance_asset"/> -->
     </menuitem>
 </odoo>

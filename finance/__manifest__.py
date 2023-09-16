@@ -15,7 +15,7 @@
         - Financial Reporting: Generate detailed reports to gain insights into your financial status and trends.
     """,
     'category': 'Invoicing',
-    'version': '16.0.0.5',
+    'version': '16.0.7.0',
     'author': 'Softparadox',
     'website': 'https://softparadox.com',
     'license': 'LGPL-3',
@@ -23,8 +23,10 @@
     'data': [
         'security/ir.model.access.csv',
         'data/ir_cron_data.xml',
+        'data/finance_data_templates.xml',
         'views/finance_transaction_views.xml',
         'views/finance_account_views.xml',
+        'views/finance_budget_views.xml',
         'views/finance_transference_views.xml',
         'views/finance_category_views.xml',
         'views/finance_asset_views.xml',

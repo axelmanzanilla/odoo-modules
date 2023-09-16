@@ -8,6 +8,7 @@ class FinanceAccount(models.Model):
 
     name = fields.Char(string='Name')
     description = fields.Text(string='Description')
+    image = fields.Image(string="Image")
     currency_id = fields.Many2one(comodel_name='res.currency',
                                   string='Currency',
                                   default=lambda self: self.env.company.currency_id,

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="finance_budget_view_search" model="ir.ui.view">
+        <field name="name">finance.budget.view.search</field>
+        <field name="model">finance.budget</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="description"/>
+                <filter string="Review" name="review" domain="[('budget_review', '!=', 'no_review')]"/>
+                <separator/>
+                <filter string="End date" name="end_date" date="budget_end_date"/>
+                <separator/>
+                <filter string="Goal" name="goal" domain="[('goal', '&gt;', 0)]"/>
+                <filter string="Goal almost reached" name="goal_reached" domain="[('goal_percentage', '&gt;', 80)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="finance_budget_view_tree" model="ir.ui.view">
+        <field name="name">finance.budget.view.tree</field>
+        <field name="model">finance.budget</field>
+        <field name="arch" type="xml">
+            <tree string="Budgets" default_order="name desc, id desc">
+                <field name="name" />
+                <field name="currency_id" invisible="1" />
+                <field name="amount" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="finance_budget_view_form" model="ir.ui.view">
+        <field name="name">finance.budget.view.form</field>
+        <field name="model">finance.budget</field>
+        <field name="arch" type="xml">
+            <form string="Budgets">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="description" />
+                            <field name="icon" widget="image" class="oe_avatar" />
+                            <field name="currency_id" invisible="1" />
+                            <field name="amount" />
+                        </group>
+                        <group>
+                            <field name="goal"/>
+                            <field name="goal_amount"/>
+                            <field name="goal_percentage" widget="progressbar"/>
+                            <field name="budget_end_date" />
+                            <field name="budget_review" />
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="finance_budget_view_kanban" model="ir.ui.view">
+        <field name="name">finance.budget.view.kanban</field>
+        <field name="model">finance.budget</field>
+        <field name="arch" type="xml">
+            <kanban string="Budgets">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click oe_kanban_details">
+                            <div>
+                                <strong>
+                                    <field name="name" />
+                                </strong>
+                            </div>
+                            <div>
+                                <field name="goal" invisible="1" />
+                                <field name="goal_percentage" attrs="{ 'invisible': [('goal', '=', False)] }" widget="progressbar" />
+                                <field name="currency_id" invisible="1" />
+                                <field name="amount" />
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>

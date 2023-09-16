@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="finance_transference_view_search" model="ir.ui.view">
+        <field name="name">finance.transference.view.search</field>
+        <field name="model">finance.transference</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="description"/>
+                <filter string="Date" name="date" date="date"/>
+                <group expand="0" string="Group By">
+                    <filter string="Account from" name="account_from" context="{'group_by': 'account_from'}"/>
+                    <filter string="Account to" name="account_to" context="{'group_by': 'account_to'}"/>
+                    <filter string="Budget from" name="budget_from" context="{'group_by': 'budget_from'}"/>
+                    <filter string="Budget to" name="budget_to" context="{'group_by': 'budget_to'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="finance_transference_view_tree" model="ir.ui.view">
         <field name="name">finance.transference.view.tree</field>
         <field name="model">finance.transference</field>
@@ -33,7 +51,7 @@
                         </group>
                     </group>
                     <div class="d-flex">
-                        <div attrs="{'invisible': [('type', '=', 'budget')]}" class="me-4">
+                        <div class="me-4">
                             <div>
                                 <label for="account_from"/>
                                 <field name="account_from" attrs="{'readonly': [('name', '!=', False)]}" />
@@ -43,7 +61,7 @@
                                 <field name="account_to" attrs="{'readonly': [('name', '!=', False)]}" />
                             </div>
                         </div>
-                        <div attrs="{'invisible': [('type', '=', 'account')]}">
+                        <div>
                             <div>
                                 <label for="budget_from"/>
                                 <field name="budget_from" attrs="{'readonly': [('name', '!=', False)]}" />

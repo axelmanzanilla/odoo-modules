@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="finance_account_view_search" model="ir.ui.view">
+        <field name="name">finance.account.view.search</field>
+        <field name="model">finance.account</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="description"/>
+            </search>
+        </field>
+    </record>
+
     <record id="finance_account_view_tree" model="ir.ui.view">
         <field name="name">finance.account.view.tree</field>
         <field name="model">finance.account</field>
@@ -9,39 +20,6 @@
                 <field name="currency_id" invisible="1" />
                 <field name="amount" />
             </tree>
-        </field>
-    </record>
-
-    <record id="finance_account_view_form" model="ir.ui.view">
-        <field name="name">finance.account.view.form</field>
-        <field name="model">finance.account</field>
-        <field name="arch" type="xml">
-            <form string="Accounts">
-                <sheet>
-                    <group>
-                        <group>
-                            <field name="name" />
-                            <field name="description" />
-                            <field name="currency_id" invisible="1" />
-                            <field name="amount" />
-                        </group>
-                        <group>
-                            <field name="type" invisible="1" />
-                            <field name="goal" attrs="{ 'invisible': [('type', '=', 'account')] }" />
-                            <field name="goal_amount" attrs="{ 'invisible': [('goal', '=', False)] }" />
-                            <field name="goal_percentage" attrs="{ 'invisible': [('goal', '=', False)] }" widget="progressbar" />
-                            <field name="budget_end_date" />
-                            <field name="budget_review" />
-                            <field name="send_email_review" />
-                        </group>
-                    </group>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids"/>
-                    <field name="activity_ids"/>
-                    <field name="message_ids"/>
-                </div>
-            </form>
         </field>
     </record>
 
@@ -59,8 +37,6 @@
                                 </strong>
                             </div>
                             <div>
-                                <field name="goal" invisible="1" />
-                                <field name="goal_percentage" attrs="{ 'invisible': [('goal', '=', False)] }" widget="progressbar" />
                                 <field name="currency_id" invisible="1" />
                                 <field name="amount" />
                             </div>
@@ -68,6 +44,33 @@
                     </t>
                 </templates>
             </kanban>
+        </field>
+    </record>
+
+    <record id="finance_account_view_form" model="ir.ui.view">
+        <field name="name">finance.account.view.form</field>
+        <field name="model">finance.account</field>
+        <field name="arch" type="xml">
+            <form string="Accounts">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="description" />
+                        </group>
+                        <group>
+                            <field name="icon" widget="image" class="oe_avatar" />
+                            <field name="currency_id" invisible="1" />
+                            <field name="amount" />
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
         </field>
     </record>
 </odoo>

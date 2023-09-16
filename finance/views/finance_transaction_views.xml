@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="finance_transaction_view_search" model="ir.ui.view">
+        <field name="name">finance.transaction.view.search</field>
+        <field name="model">finance.transaction</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="account_id"/>
+                <field name="budget_id"/>
+                <filter string="Date" name="date" date="date"/>
+                <separator/>
+                <filter string="Income" name="income" domain="[('amount', '&gt;', 0)]"/>
+                <filter string="Expenses" name="expenses" domain="[('amount', '&lt;', 0)]"/>
+                <separator/>
+                <filter string="Without account" name="no_account" domain="[('account_id', '=', False)]"/>
+                <filter string="Without budget" name="no_budget" domain="[('budget_id', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Date" name="date" context="{'group_by': 'date'}"/>
+                    <filter string="Account" name="account" context="{'group_by': 'account_id'}"/>
+                    <filter string="Budget" name="budget" context="{'group_by': 'budget_id'}"/>
+                    <filter string="Category" name="category" context="{'group_by': 'category_ids'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="finance_transaction_view_tree" model="ir.ui.view">
         <field name="name">finance.transaction.view.tree</field>
         <field name="model">finance.transaction</field>
@@ -16,6 +42,43 @@
                 <field name="amount" attrs="{'readonly': [('has_children', '=', True)]}" />
                 <button name="action_open_transaction" string="Details" type="object" class="oe_highlight" />
             </tree>
+        </field>
+    </record>
+
+    <record id="finance_transaction_view_calendar" model="ir.ui.view">
+        <field name="name">finance.transaction.view.calendar</field>
+        <field name="model">finance.transaction</field>
+        <field name="arch" type="xml">
+            <calendar date_start="date" color="budget_id" event_open_popup="1" scales="week,month,year" mode="month">
+                <field name="name"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="amount"/>
+                <field name="account_id"/>
+                <field name="budget_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="finance_transaction_view_graph" model="ir.ui.view">
+        <field name="name">finance.transaction.view.graph</field>
+        <field name="model">finance.transaction</field>
+        <field name="arch" type="xml">
+            <graph disable_linking="1">
+                <field name="amount" type="measure"/>
+                <field name="date" interval="month"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="finance_transaction_view_pivot" model="ir.ui.view">
+        <field name="name">finance.transaction.view.pivot</field>
+        <field name="model">finance.transaction</field>
+        <field name="arch" type="xml">
+            <pivot disable_linking="1">
+                <field name="amount" type="measure"/>
+                <field name="budget_id" type="col"/>
+                <field name="date" type="row"/>
+            </pivot>
         </field>
     </record>
 
@@ -36,6 +99,10 @@
                             <field name="is_recurrent" invisible="1" />
                             <field name="recurrence" attrs="{'invisible': [('is_recurrent', '=', False)], 'required': [('is_recurrent', '=', True)]}" />
                             <field name="next_recurrence" attrs="{'invisible': [('is_recurrent', '=', False)]}" />
+                            <field name="notification_user_ids" attrs="{'invisible': [('is_recurrent', '=', False)]}" class="o_task_user_field"
+                                options="{'no_open': True, 'no_quick_create': True}"
+                                widget="many2many_avatar_user"
+                             />
                             <field name="currency_id" invisible="1" />
                             <field name="has_children" invisible="1" />
                             <field name="account_id" options="{'no_open': True, 'no_create': True}" />
@@ -65,8 +132,8 @@
         </field>
     </record>
 
-    <record id="finance_recurrent_transaction_view_tree" model="ir.ui.view">
-        <field name="name">finance.recurrent.transaction.view.tree</field>
+    <record id="finance_scheduled_transaction_view_tree" model="ir.ui.view">
+        <field name="name">finance.scheduled.transaction.view.tree</field>
         <field name="model">finance.transaction</field>
         <field name="arch" type="xml">
             <tree string="Transactions" default_order="name desc, id desc">

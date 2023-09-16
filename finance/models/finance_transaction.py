@@ -12,7 +12,8 @@ class FinanceTransaction(models.Model):
     name = fields.Char(string='Name')
     description = fields.Text(string='Description')
     date = fields.Date(string='Date',
-                       default= lambda self: self.browse(self.env.context.get('active_id')).date or date.today())
+                       default=lambda self: self.browse(self.env.context.get('active_id')).date or date.today(),
+                       copy=False)
     currency_id = fields.Many2one(comodel_name='res.currency',
                                   string='Currency',
                                   default=lambda self: self.env.company.currency_id,
@@ -23,24 +24,23 @@ class FinanceTransaction(models.Model):
                                 ondelete='cascade')
     child_ids = fields.One2many(comodel_name='finance.transaction',
                                 inverse_name='parent_id',
-                                string='Sub-transactions')
+                                string='Sub-transactions',
+                                copy=True)
     has_children = fields.Boolean(compute='_compute_has_children')
     account_id = fields.Many2one(comodel_name='finance.account',
                                  string='Account',
-                                 domain=[('type', '=', 'account')],
                                  compute='_compute_account_id',
                                  readonly=False,
                                  store=True,
                                  default=lambda self: self.env['finance.transaction'].search([('parent_id', '=', False)], order='date desc, id desc', limit=1).account_id)
-    budget_id = fields.Many2one(comodel_name='finance.account',
+    budget_id = fields.Many2one(comodel_name='finance.budget',
                                 string='Budget',
-                                domain=[('type', '=', 'budget')],
                                 compute='_compute_budget_id',
                                 readonly=False,
                                 store=True)
     transference_id = fields.Many2one(comodel_name='finance.transference', string='Transference', ondelete='cascade')
     category_ids = fields.Many2many(comodel_name='finance.category',
-                                    string='Category',
+                                    string='Categories',
                                     compute='_compute_category_ids',
                                     readonly=False,
                                     store=True)
@@ -53,7 +53,7 @@ class FinanceTransaction(models.Model):
     next_recurrence = fields.Date(string='Next Recurrence',
                                   compute='_compute_next_recurrence',
                                   store=True)
-    recurrence_email = fields.Boolean(string='Email Notification')
+    notification_user_ids= fields.Many2many(comodel_name='res.users', string='Email Notification')
     tracking_period = fields.Selection(string='Tracking Period',
                                        selection=[('no', 'No track'),
                                                   ('weeks', 'After 1 Week'),
@@ -111,9 +111,7 @@ class FinanceTransaction(models.Model):
         }
 
     def _cron_create_transaction(self):
-        print("\n\nCron")
         transactions = self.search([('is_recurrent', '=', True), ('parent_id', '=', False), ('next_recurrence', '<', date.today())])
-        print(transactions)
         for transaction in transactions:
             new_transaction = self._new_transaction_from_transaction(transaction, transaction.next_recurrence)
             for child in transaction.child_ids:
@@ -122,8 +120,20 @@ class FinanceTransaction(models.Model):
                 new_child = self.create(self._new_transaction_from_transaction(child, transaction.next_recurrence))
                 new_transaction['child_ids'].append(new_child.id)
             self.create(new_transaction)
-            transaction.next_recurrence = transaction.next_recurrence + relativedelta(**{transaction.recurrence: 1})
+            transaction.next_recurrence = transaction.next_recurrence + relativedelta(**{ transaction.recurrence: 1 })
             self.write(transaction)
+
+            for user in transaction.notification_user_ids:
+                mail_values = {
+                    'auto_delete': True,
+                    'author_id': self.env.user.partner_id.id,
+                    'body_html': self.env['ir.qweb']._render('finance.finance_automatic_transaction', { 'transaction': transaction }),
+                    'email_from': (self.env.company.partner_id.email_formatted or self.env.user.email_formatted or self.env.ref('base.user_root').email_formatted),
+                    'email_to': user.email_formatted,
+                    'subject': f'Created transaction {transaction.name}',
+                }
+                self.env['mail.mail'].sudo().create(mail_values).send()
+        return True
 
     @api.model
     def _new_transaction_from_transaction(self, transaction, date):
@@ -137,3 +147,10 @@ class FinanceTransaction(models.Model):
             'budget_id': transaction.budget_id.id,
             'category_ids': transaction.category_ids
         }
+
+    def copy(self, default=None):
+        transaction = super(FinanceTransaction, self).copy(default)
+        transaction.date = date.today()
+        for child in transaction.child_ids:
+            child.date = date.today()
+        return transaction
