@@ -15,20 +15,10 @@ class FinanceTransference(models.Model):
                                        ('both', 'Account & Budget')],
                             default='account',
                             required=True)
-    account_from = fields.Many2one(comodel_name='finance.account',
-                                   string='Account from',
-                                   domain=[('type', '=', 'account')],
-                                   default=False)
-    account_to = fields.Many2one(comodel_name='finance.account',
-                                 string='Account to',
-                                 domain=[('type', '=', 'account')],
-                                 default=False)
-    budget_from = fields.Many2one(comodel_name='finance.account',
-                                   string='Budget from',
-                                   domain=[('type', '=', 'budget')])
-    budget_to = fields.Many2one(comodel_name='finance.account',
-                                 string='Budget to',
-                                 domain=[('type', '=', 'budget')])
+    account_from = fields.Many2one(comodel_name='finance.account', string='Account from')
+    account_to = fields.Many2one(comodel_name='finance.account', string='Account to')
+    budget_from = fields.Many2one(comodel_name='finance.budget', string='Budget from')
+    budget_to = fields.Many2one(comodel_name='finance.account', string='Budget to')
     currency_id = fields.Many2one(comodel_name='res.currency',
                                   string='Currency',
                                   default=lambda self: self.env.company.currency_id,

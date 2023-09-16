@@ -23,7 +23,9 @@
         <field name="model">finance.transference</field>
         <field name="arch" type="xml">
             <tree string="Accounts" default_order="name desc, id desc">
+                <field name="date" />
                 <field name="name" />
+                <field name="description" />
                 <field name="currency_id" invisible="1" />
                 <field name="amount" />
             </tree>
@@ -52,22 +54,22 @@
                     </group>
                     <div class="d-flex">
                         <div class="me-4">
-                            <div>
-                                <label for="account_from"/>
+                            <div attrs="{'invisible': [('type', '=', 'budget')]}">
+                                <label for="account_from" class="me-2"/>
                                 <field name="account_from" attrs="{'readonly': [('name', '!=', False)]}" />
                             </div>
-                            <div>
-                                <label for="account_to"/>
+                            <div attrs="{'invisible': [('type', '=', 'budget')]}">
+                                <label for="account_to" class="me-2"/>
                                 <field name="account_to" attrs="{'readonly': [('name', '!=', False)]}" />
                             </div>
                         </div>
                         <div>
-                            <div>
-                                <label for="budget_from"/>
+                            <div attrs="{'invisible': [('type', '=', 'account')]}">
+                                <label for="budget_from" class="me-2"/>
                                 <field name="budget_from" attrs="{'readonly': [('name', '!=', False)]}" />
                             </div>
-                            <div>
-                                <label for="budget_to"/>
+                            <div attrs="{'invisible': [('type', '=', 'account')]}">
+                                <label for="budget_to" class="me-2"/>
                                 <field name="budget_to" attrs="{'readonly': [('name', '!=', False)]}" />
                             </div>
                         </div>

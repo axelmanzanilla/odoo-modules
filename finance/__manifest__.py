@@ -15,11 +15,11 @@
         - Financial Reporting: Generate detailed reports to gain insights into your financial status and trends.
     """,
     'category': 'Invoicing',
-    'version': '16.0.7.0',
+    'version': '16.0.8.0',
     'author': 'Softparadox',
     'website': 'https://softparadox.com',
     'license': 'LGPL-3',
-    'depends': ['mail'],
+    'depends': ['mail', 'rating'],
     'data': [
         'security/ir.model.access.csv',
         'data/ir_cron_data.xml',

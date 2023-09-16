@@ -9,4 +9,14 @@
         <field name="state">code</field>
         <field name="code">model._cron_create_transaction()</field>
     </record>
+
+    <record id="ir_cron_send_review_mail" model="ir.cron">
+        <field name="name">Finance: Send review mail</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="model_id" ref="model_finance_transaction"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_send_review_mail()</field>
+    </record>
 </odoo>

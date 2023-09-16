@@ -3,7 +3,7 @@
     <record id="action_finance_transaction" model="ir.actions.act_window">
         <field name="name">Transactions</field>
         <field name="res_model">finance.transaction</field>
-        <field name="view_mode">tree,calendar,graph,form,pivot</field>
+        <field name="view_mode">tree,calendar,form</field>
         <field name="view_id" ref="finance_transaction_view_tree" />
         <field name="search_view_id" ref="finance.finance_transaction_view_search"/>
         <field name="domain">[('parent_id', '=', False), ('is_recurrent', '=', False)]</field>
@@ -85,11 +85,38 @@
         </field>
     </record>
 
+    <record id="action_finance_review" model="ir.actions.act_window">
+        <field name="name">Reviews</field>
+        <field name="res_model">finance.transaction</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="view_id" ref="finance_review_transaction_view_kanban"/>
+        <field name="domain">[('rating_avg', '!=', False)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Review a transaction first
+            </p>
+        </field>
+    </record>
+
+    <record id="action_finance_reporting" model="ir.actions.act_window">
+        <field name="name">Reporting</field>
+        <field name="res_model">finance.transaction</field>
+        <field name="view_mode">graph,pivot</field>
+        <field name="domain">[('has_children', '=', False), ('is_recurrent', '=', False)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No data yet!
+            </p><p>
+                Create new transactions to get statistics.
+            </p>
+        </field>
+    </record>
+
     <menuitem
         id="finance_menu_root"
         name="Finance"
         web_icon="finance,static/description/icon.png">
-        <menuitem id="transactions_menu" name="Transactions">
+        <menuitem id="transactions_menu" name="Transactions" sequence="1">
             <menuitem id="finance_manual_menu" name="Manual">
                 <menuitem id="menu_finance_transaction" name="Transactions" action="action_finance_transaction"/>
                 <menuitem id="menu_finance_transference" name="Transferences" action="action_finance_transference"/>
@@ -98,11 +125,15 @@
                 <menuitem id="menu_finance_scheduled" name="Scheduled Transactions" action="action_finance_scheduled"/>
             </menuitem>
         </menuitem>
-        <menuitem id="accounts_menu" name="Accounts">
+        <menuitem id="accounts_menu" name="Accounts"  sequence="2">
             <menuitem id="menu_finance_account" name="Accounts" action="action_finance_account"/>
             <menuitem id="menu_finance_budget" name="Budgets" action="action_finance_budget"/>
             <menuitem id="menu_finance_category" name="Categories" action="action_finance_category"/>
         </menuitem>
-        <!-- <menuitem id="menu_finance_asset" name="Assets" action="action_finance_asset"/> -->
+        <menuitem id="extra_menu" name="Extras"  sequence="3">
+            <menuitem id="menu_finance_asset" name="Assets" action="action_finance_asset"/>
+            <menuitem id="menu_finance_review" name="Reviews" action="action_finance_review"/>
+        </menuitem>
+        <menuitem id="menu_finance_reporting" name="Reporting" action="action_finance_reporting"  sequence="4"/>
     </menuitem>
 </odoo>

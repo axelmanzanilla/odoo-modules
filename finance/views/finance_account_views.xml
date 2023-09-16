@@ -17,6 +17,7 @@
         <field name="arch" type="xml">
             <tree string="Accounts" default_order="name desc, id desc">
                 <field name="name" />
+                <field name="description" />
                 <field name="currency_id" invisible="1" />
                 <field name="amount" />
             </tree>
@@ -27,18 +28,23 @@
         <field name="name">finance.account.view.kanban</field>
         <field name="model">finance.account</field>
         <field name="arch" type="xml">
-            <kanban string="Accounts">
+            <kanban string="Budgets">
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="oe_kanban_global_click oe_kanban_details">
-                            <div>
-                                <strong>
-                                    <field name="name" />
-                                </strong>
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <field name="icon" widget="image" />
                             </div>
-                            <div>
-                                <field name="currency_id" invisible="1" />
-                                <field name="amount" />
+                            <div class="oe_kanban_details">
+                                <div>
+                                    <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                </div>
+                                <div>
+                                    <span class="o_kanban_record_subtitle">
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="amount"/>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </t>
@@ -53,16 +59,12 @@
         <field name="arch" type="xml">
             <form string="Accounts">
                 <sheet>
+                    <field name="icon" widget="image" class="oe_avatar"/>
                     <group>
-                        <group>
-                            <field name="name" />
-                            <field name="description" />
-                        </group>
-                        <group>
-                            <field name="icon" widget="image" class="oe_avatar" />
-                            <field name="currency_id" invisible="1" />
-                            <field name="amount" />
-                        </group>
+                        <field name="name" default_focus="1"/>
+                        <field name="description"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="amount"/>
                     </group>
                 </sheet>
                 <div class="oe_chatter">

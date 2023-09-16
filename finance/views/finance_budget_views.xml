@@ -11,7 +11,7 @@
                 <separator/>
                 <filter string="End date" name="end_date" date="budget_end_date"/>
                 <separator/>
-                <filter string="Goal" name="goal" domain="[('goal', '&gt;', 0)]"/>
+                <filter string="Goal" name="goal" domain="[('goal_percentage', '&gt;', 0)]"/>
                 <filter string="Goal almost reached" name="goal_reached" domain="[('goal_percentage', '&gt;', 80)]"/>
             </search>
         </field>
@@ -23,6 +23,8 @@
         <field name="arch" type="xml">
             <tree string="Budgets" default_order="name desc, id desc">
                 <field name="name" />
+                <field name="description" />
+                <field name="budget_end_date" />
                 <field name="currency_id" invisible="1" />
                 <field name="amount" />
             </tree>
@@ -35,21 +37,15 @@
         <field name="arch" type="xml">
             <form string="Budgets">
                 <sheet>
+                    <field name="icon" widget="image" class="oe_avatar"/>
                     <group>
-                        <group>
-                            <field name="name" />
-                            <field name="description" />
-                            <field name="icon" widget="image" class="oe_avatar" />
-                            <field name="currency_id" invisible="1" />
-                            <field name="amount" />
-                        </group>
-                        <group>
-                            <field name="goal"/>
-                            <field name="goal_amount"/>
-                            <field name="goal_percentage" widget="progressbar"/>
-                            <field name="budget_end_date" />
-                            <field name="budget_review" />
-                        </group>
+                        <field name="name" />
+                        <field name="description" />
+                        <field name="currency_id" invisible="1" />
+                        <field name="amount" />
+                        <field name="goal_amount"/>
+                        <field name="budget_end_date" />
+                        <field name="budget_review" />
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -68,17 +64,23 @@
             <kanban string="Budgets">
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="oe_kanban_global_click oe_kanban_details">
-                            <div>
-                                <strong>
-                                    <field name="name" />
-                                </strong>
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <field name="icon" widget="image" />
                             </div>
-                            <div>
-                                <field name="goal" invisible="1" />
-                                <field name="goal_percentage" attrs="{ 'invisible': [('goal', '=', False)] }" widget="progressbar" />
-                                <field name="currency_id" invisible="1" />
-                                <field name="amount" />
+                            <div class="oe_kanban_details">
+                                <div>
+                                    <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                </div>
+                                <div>
+                                    <span class="o_kanban_record_subtitle">
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="amount"/>
+                                    </span>
+                                </div>
+                                <field name="goal_percentage"
+                                    attrs="{ 'invisible': [('goal_percentage', '=', 0)] }"
+                                    widget="progressbar"/>
                             </div>
                         </div>
                     </t>

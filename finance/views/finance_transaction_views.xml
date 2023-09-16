@@ -53,8 +53,8 @@
                 <field name="name"/>
                 <field name="currency_id" invisible="1"/>
                 <field name="amount"/>
-                <field name="account_id"/>
-                <field name="budget_id"/>
+                <field name="account_id" attrs="{'invisible': [('account_id', '=', False)]}"/>
+                <field name="budget_id" attrs="{'invisible': [('budget_id', '=', False)]}"/>
             </calendar>
         </field>
     </record>
@@ -93,32 +93,32 @@
                             <field name="name" required="1" />
                             <field name="description" />
                             <field name="category_ids" widget="many2many_tags" />
+                            <field name="amount" attrs="{'readonly': [('has_children', '=', True)]}"/>
                         </group>
                         <group>
                             <field name="date" />
+                            <field name="account_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="budget_id" options="{'no_open': True, 'no_create': True}"/>
+                            <field name="review_period"/>
                             <field name="is_recurrent" invisible="1" />
                             <field name="recurrence" attrs="{'invisible': [('is_recurrent', '=', False)], 'required': [('is_recurrent', '=', True)]}" />
-                            <field name="next_recurrence" attrs="{'invisible': [('is_recurrent', '=', False)]}" />
-                            <field name="notification_user_ids" attrs="{'invisible': [('is_recurrent', '=', False)]}" class="o_task_user_field"
-                                options="{'no_open': True, 'no_quick_create': True}"
-                                widget="many2many_avatar_user"
-                             />
+                            <field name="next_recurrence" attrs="{'invisible': [('is_recurrent', '=', False)]}"/>
                             <field name="currency_id" invisible="1" />
                             <field name="has_children" invisible="1" />
-                            <field name="account_id" options="{'no_open': True, 'no_create': True}" />
-                            <field name="amount" attrs="{'readonly': [('has_children', '=', True)]}" />
+                            <field name="transference_id"  attrs="{'invisible': [('transference_id', '=', False)], 'readonly': True}"/>
                         </group>
                     </group>
                     <label for="child_ids" />
                     <div>
                         <field name="child_ids">
                             <tree edit="True" editable="bottom">
-                                <field name="date" />
-                                <field name="name" />
-                                <field name="account_id" options="{'no_open': True, 'no_create': True}" />
-                                <field name="budget_id" options="{'no_open': True, 'no_create': True}" />
-                                <field name="currency_id" invisible="1" />
-                                <field name="amount" />
+                                <field name="date"/>
+                                <field name="name"/>
+                                <field name="account_id" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="budget_id" options="{'no_open': True, 'no_create': True}"/>
+                                <field name="category_ids" options="{'no_open': True, 'no_create': True}" widget="many2many_tags"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="amount"/>
                             </tree>
                         </field>
                     </div>
@@ -137,15 +137,65 @@
         <field name="model">finance.transaction</field>
         <field name="arch" type="xml">
             <tree string="Transactions" default_order="name desc, id desc">
-                <field name="date" />
-                <field name="name" />
-                <field name="description" />
-                <field name="account_id" options="{'no_open': True, 'no_create': True}" />
-                <field name="budget_id" options="{'no_open': True, 'no_create': True}" />
-                <field name="category_ids" options="{'no_open': True}" widget="many2many_tags" />
-                <field name="currency_id" invisible="1" />
-                <field name="amount" />
+                <field name="date"/>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="account_id" options="{'no_open': True, 'no_create': True}"/>
+                <field name="budget_id" options="{'no_open': True, 'no_create': True}"/>
+                <field name="category_ids" options="{'no_open': True}" widget="many2many_tags"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="amount"/>
             </tree>
+        </field>
+    </record>
+
+    <record id="finance_review_transaction_view_kanban" model="ir.ui.view">
+        <field name="name">finance.scheduled.transaction.view.kanban</field>
+        <field name="model">finance.transaction</field>
+        <field name="arch" type="xml">
+            <kanban create="false">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click d-flex align-items-center justify-content-center">
+                            <div class="row oe_kanban_details">
+                                <div class="col-4 my-auto">
+                                    <field name="rating_last_image" widget="image" class="bg-view"/>
+                                </div>
+                                <div class="col-8 ps-1">
+                                    <strong>
+                                        <field name="name"/>
+                                    </strong>
+                                    <ul>
+                                        <li t-if="record.date.raw_value">
+                                            on <field name="date"/>
+                                        </li>
+                                        <li t-if="record.description.raw_value">
+                                            <span class="o_text_overflow">
+                                                <field name="description"/>
+                                            </span>
+                                        </li>
+                                        <li t-if="record.account_id.raw_value">
+                                            <span class="o_text_overflow">
+                                                <strong><label for="account_id" class="me-2">Account:</label></strong>
+                                                <field name="account_id"/>
+                                            </span>
+                                        </li>
+                                        <li t-if="record.budget_id.raw_value">
+                                            <span class="o_text_overflow">
+                                                <strong><label for="budget_id" class="me-2">Budget:</label></strong>
+                                                <field name="budget_id"/>
+                                            </span>
+                                        </li>
+                                        <li t-if="record.rating_last_feedback.raw_value" class="o_text_overflow">
+                                            <field name="rating_last_feedback"/>
+                                        </li>
+                                    </ul>
+                            </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 </odoo>

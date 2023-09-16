@@ -9,7 +9,6 @@ class FinanceBudget(models.Model):
     transaction_ids = fields.One2many(comodel_name='finance.transaction',
                                       inverse_name='budget_id',
                                       string='Transactions')
-    goal = fields.Boolean(string='Goal')
     goal_amount = fields.Monetary(string='Goal Amount')
     goal_percentage = fields.Integer(string='Percentage',
                                      compute='_compute_goal_percentage',
@@ -17,7 +16,7 @@ class FinanceBudget(models.Model):
     budget_end_date = fields.Date(string='Period End Date',
                                   help='Hello',
                                   default=False)
-    budget_review = fields.Selection(string='Recurrence',
+    budget_review = fields.Selection(string='Review recurrence',
                                      help='Bye',
                                      selection=[('no_review', 'No review'),
                                                 ('days', 'Daily'),

@@ -20,5 +20,62 @@
                 </body>
             </html>
         </template>
+
+        <record id="transaction_rating_email_template" model="mail.template">
+            <field name="name">Finance: Transaction Rating Request</field>
+            <field name="model_id" ref="finance.model_finance_transaction"/>
+            <field name="subject">Rate {{object.name}}</field>
+            <field name="email_from">{{ (object._rating_get_operator().email_formatted if object._rating_get_operator() else user.email_formatted) }}</field>
+            <field name="partner_to" >{{ object._rating_get_partner().id }}</field>
+            <field name="description">This template send a request for a rating transaction</field>
+            <field name="body_html" type="html">
+                <div>
+                    <t t-set="access_token" t-value="object._rating_get_access_token()"/>
+                    <t t-set="partner" t-value="object._rating_get_partner()"/>
+                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="width:100%; margin:0px auto;">
+                    <tbody>
+                        <tr><td valign="top" style="font-size: 13px;">
+                            <t t-if="partner.name">
+                                Hello <t t-out="partner.name or ''">Brandon Freeman</t>,<br/><br/>
+                            </t>
+                            <t t-else="">
+                                Hello,<br/><br/>
+                            </t>
+                            Please take a moment to rate your experience with the following transaction: <strong t-out="object.name or ''">Planning and budget</strong>.
+                        </td></tr>
+                        <tr><td style="text-align: center;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" summary="o_mail_notification" style="width:100%; margin: 32px 0px 32px 0px;">
+                                <tr><td style="font-size: 13px;">
+                                    <strong>Tell us how you feel about the income or expense</strong><br/>
+                                    <span style="font-size: 12px; opacity: 0.5; color: #454748;">(click on one of these smileys)</span>
+                                </td></tr>
+                                <tr><td style="font-size: 13px;">
+                                    <table style="width:100%;text-align:center;margin-top:2rem;">
+                                        <tr>
+                                            <td>
+                                                <a t-attf-href="/rate/{{ access_token }}/5">
+                                                    <img alt="Satisfied" src="/rating/static/src/img/rating_5.png" title="Satisfied"/>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a t-attf-href="/rate/{{ access_token }}/3">
+                                                    <img alt="Okay" src="/rating/static/src/img/rating_3.png" title="Okay"/>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a t-attf-href="/rate/{{ access_token }}/1">
+                                                    <img alt="Dissatisfied" src="/rating/static/src/img/rating_1.png" title="Dissatisfied"/>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td></tr>
+                            </table>
+                        </td></tr>
+                    </tbody>
+                    </table>
+                </div>
+            </field>
+        </record>
     </data>
 </odoo>
